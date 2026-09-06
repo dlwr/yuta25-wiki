@@ -17,7 +17,7 @@ description: U-NEXT の視聴履歴（動画・書籍）から未記録の作品
 5. 選ばれなかったものは `ledger.py add seen <id> skipped --title ...`
 6. 追記する
    - 行は ` [YYYY/M/D]\t種別\t[作品名]`。先頭は半角スペース 1 つ、区切りはタブ。作品名は U-NEXT の表記から《ニューマスター版》のような版表記を落とす。既に感想ページがあるならそのタイトルに合わせる（searchFullText で確認）
-   - 同じ日付の枠行があれば replace。無ければ、その日付より後の最初の行を anchor に insertBefore。表の末尾なら最後の行の次の行を anchor にする
+   - 枠行（日付だけの行）はペースメーカー。残っている枠のうち最も早い行から順に replace で埋める。複数追記するときは視聴日順に並べて先頭の枠から詰める。insertBefore で行を増やさない
    - 種別は同じ年の表で使われている語（映画 / ドラマ / アニメ / バラエティ / 本 / 漫画 / 雑誌 / ゲーム）
    - previewEdit → 出力を見せる → OK なら submitEdit
 7. 追記したものを `ledger.py add seen <id> added --title ... --date ...`
