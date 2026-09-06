@@ -273,6 +273,13 @@ def original_and_year(wikitext):
     return original, year.group(0) if year else None
 
 
+def pick_article(hits):
+    for h in hits:
+        if re.search(r"\((?:\d{4} )?[^()]*film\)$", h["title"]):
+            return h["title"]
+    return hits[0]["title"] if hits else None
+
+
 def pick_poster(titles):
     for t in titles:
         if "poster" in t.lower():
@@ -318,20 +325,22 @@ def cmd_poster(args):
     original, year = original_and_year(fetch_wikitext(args.article))
     if not original:
         sys.exit("Infobox に原題が無い")
-    hits = api("en.wikipedia.org", action="query", list="search",
-               srsearch=f'"{original}" {year or ""} film', srlimit=5)["query"]["search"]
-    if not hits:
+    hits = []
+    for query in (f'"{original}" {year or ""} film', f"{original} {year or ''} film"):
+        hits += api("en.wikipedia.org", action="query", list="search", srsearch=query, srlimit=5)["query"]["search"]
+    article = pick_article(hits)
+    if not article:
         sys.exit("en.wikipedia に記事が無い")
-    page = first_page(api("en.wikipedia.org", action="query", prop="images", imlimit=50, titles=hits[0]["title"]))
+    page = first_page(api("en.wikipedia.org", action="query", prop="images", imlimit=50, titles=article))
     chosen = pick_poster([i["title"] for i in page.get("images", [])])
     if not chosen:
-        sys.exit(f"ポスターが無い: {hits[0]['title']}")
+        sys.exit(f"ポスターが無い: {article}")
     info = first_page(api("en.wikipedia.org", action="query", prop="imageinfo", iiprop="url", titles=chosen))
     url = info["imageinfo"][0]["url"]
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     with urllib.request.urlopen(req) as res, open(args.out, "wb") as f:
         f.write(res.read())
-    print(f"{args.out}\t{hits[0]['title']}\t{url}")
+    print(f"{args.out}\t{article}\t{url}")
 
 
 def main():

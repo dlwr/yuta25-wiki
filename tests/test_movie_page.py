@@ -6,6 +6,7 @@ from scripts.movie_page import (
     infobox_rows,
     lead_paragraphs,
     parse_infobox,
+    pick_article,
     pick_poster,
     section_bullets,
     wikipedia_url,
@@ -231,6 +232,19 @@ class HelpersTest(unittest.TestCase):
 
     def test_pick_poster_falls_back_to_first_raster_image(self):
         self.assertEqual(pick_poster(["File:Icon.svg", "File:Still.png"]), "File:Still.png")
+
+    def test_pick_article_prefers_film_title(self):
+        hits = [{"title": "Xin Zhan: Red Cliff"}, {"title": "John Woo"}, {"title": "Red Cliff (film)"}]
+        self.assertEqual(pick_article(hits), "Red Cliff (film)")
+
+    def test_pick_article_accepts_year_film_suffix(self):
+        self.assertEqual(pick_article([{"title": "Mya Taylor"}, {"title": "Tangerine (2015 film)"}]), "Tangerine (2015 film)")
+
+    def test_pick_article_falls_back_to_first_hit(self):
+        self.assertEqual(pick_article([{"title": "Inception"}, {"title": "Christopher Nolan"}]), "Inception")
+
+    def test_pick_article_none_without_hits(self):
+        self.assertIsNone(pick_article([]))
 
     def test_pick_poster_none_when_only_svg(self):
         self.assertIsNone(pick_poster(["File:Icon.svg"]))
