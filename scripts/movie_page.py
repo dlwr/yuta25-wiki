@@ -3,7 +3,7 @@
 
   movie_page.py search <邦題>                                   記事候補を出す
   movie_page.py body <記事名> [--poster URL] [--impression TEXT] [--wikitext FILE]
-  movie_page.py poster <原題> <公開年> --out <path>              en.wikipedia のポスターを保存する
+  movie_page.py poster <記事名> --out <path>                     en.wikipedia のポスターを保存する
 """
 import argparse
 import html
@@ -264,6 +264,13 @@ def build_body(article, wikitext, poster=None, impression=None):
     return "\n".join(lines) + "\n"
 
 
+def original_and_year(wikitext):
+    named = dict(parse_infobox(wikitext))
+    original = convert_inline(named.get("原題", ""), keep_links=False) or None
+    year = re.search(r"\d{4}", convert_inline(named.get("公開", ""), keep_links=False))
+    return original, year.group(0) if year else None
+
+
 def pick_poster(titles):
     for t in titles:
         if "poster" in t.lower():
@@ -306,8 +313,11 @@ def cmd_body(args):
 
 
 def cmd_poster(args):
+    original, year = original_and_year(fetch_wikitext(args.article))
+    if not original:
+        sys.exit("Infobox に原題が無い")
     hits = api("en.wikipedia.org", action="query", list="search",
-               srsearch=f'"{args.original}" {args.year} film', srlimit=5)["query"]["search"]
+               srsearch=f'"{original}" {year or ""} film', srlimit=5)["query"]["search"]
     if not hits:
         sys.exit("en.wikipedia に記事が無い")
     page = first_page(api("en.wikipedia.org", action="query", prop="images", imlimit=50, titles=hits[0]["title"]))
@@ -335,8 +345,7 @@ def main():
     p.add_argument("--wikitext")
     p.set_defaults(func=cmd_body)
     p = sub.add_parser("poster")
-    p.add_argument("original")
-    p.add_argument("year")
+    p.add_argument("article")
     p.add_argument("--out", required=True)
     p.set_defaults(func=cmd_poster)
     args = parser.parse_args()

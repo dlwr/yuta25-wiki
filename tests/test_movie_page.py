@@ -233,3 +233,20 @@ class HelpersTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OriginalAndYearTest(unittest.TestCase):
+    def test_from_infobox(self):
+        from scripts.movie_page import original_and_year
+
+        self.assertEqual(original_and_year(INFOBOX), ("Tangerine", "2015"))
+
+    def test_missing_original_title(self):
+        from scripts.movie_page import original_and_year
+
+        self.assertEqual(original_and_year("{{Infobox Film\n| 公開 = 1980年8月2日\n}}"), (None, "1980"))
+
+    def test_missing_infobox(self):
+        from scripts.movie_page import original_and_year
+
+        self.assertEqual(original_and_year("本文"), (None, None))
