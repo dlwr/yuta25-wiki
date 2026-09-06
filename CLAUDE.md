@@ -18,7 +18,7 @@ scrapbox.io/yuta25（Cosense。3000 ページ超、公開、誰でも編集可�
 ## 書き込みの約束
 
 - 候補を番号付きで提示 → ユーザーが残す番号を答える → previewEdit の出力を見せる → submitEdit
-- 新規ページは作らない。切り出し案・ハブ案は提案止まり
+- 新規ページは作らない。切り出し案・ハブ案は提案止まり。例外は `/add-movie` の映画ページだけ
 - 本文は書き換えない。リンクは末尾に 1 行追加する。本文にリンク先タイトルと完全一致する文字列があるときだけ、その行を `scripts/wrap_link.py` で括った行に replace する
 - 削除・リネーム・replaceLinks はしない
 - 候補ごとの採用 / 却下を `scripts/ledger.py` で台帳に残す。却下されたものは次回から候補に出さない
@@ -50,8 +50,10 @@ scrapbox.io/yuta25（Cosense。3000 ページ超、公開、誰でも編集可�
 - `tmp/`: スナップショット。gitignore
 - `scripts/snapshot.sh`: titles API と listPages で tmp/ を作る
 - `scripts/audit.py`: tmp/ から診断レポートを出す
+- `scripts/movie_page.py`: ja.wikipedia の記事から映画ページの本文とポスターを作る
+- `scripts/seen_frame.py`: seen の枠行を埋める ops を出す
 - テストは `python3 -m unittest discover -s tests -t .`
 
 ## スキル
 
-- `/import-bought` `/import-seen` `/link-suggest` `/audit`
+- `/import-bought` `/import-seen` `/link-suggest` `/audit` `/add-movie`
