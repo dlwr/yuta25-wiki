@@ -268,8 +268,8 @@ def build_body(article, wikitext, poster=None, impression=None):
 
 def original_and_year(wikitext):
     named = dict(parse_infobox(wikitext))
-    original = convert_inline(named.get("原題", ""), keep_links=False) or None
-    year = re.search(r"\d{4}", convert_inline(named.get("公開", ""), keep_links=False))
+    original = convert_inline(named.get("原題") or named.get("英語題") or "", keep_links=False) or None
+    year = re.search(r"\d{4}", convert_inline(named.get("公開") or named.get("公開日") or "", keep_links=False))
     return original, year.group(0) if year else None
 
 

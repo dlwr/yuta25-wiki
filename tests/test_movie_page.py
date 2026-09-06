@@ -251,6 +251,12 @@ class OriginalAndYearTest(unittest.TestCase):
 
         self.assertEqual(original_and_year("{{Infobox Film\n| 公開 = 1980年8月2日\n}}"), (None, "1980"))
 
+    def test_falls_back_to_english_title_and_release_date_param(self):
+        from scripts.movie_page import original_and_year
+
+        wikitext = "{{Infobox Film\n| 英語題 = Red Cliff Part I\n| 公開日 = {{Flagicon|China}} [[2008年]][[7月10日]]\n}}"
+        self.assertEqual(original_and_year(wikitext), ("Red Cliff Part I", "2008"))
+
     def test_missing_infobox(self):
         from scripts.movie_page import original_and_year
 
