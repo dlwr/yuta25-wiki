@@ -54,9 +54,14 @@ class ConvertInlineTest(unittest.TestCase):
         self.assertEqual(convert_inline("{{flagicon|USA}} [[マグノリア・ピクチャーズ]]"), "アメリカ合衆国の旗 [マグノリア・ピクチャーズ]")
         self.assertEqual(convert_inline("{{flagicon|JPN}} ミッドシップ"), "日本の旗 ミッドシップ")
 
+    def test_flagicon_with_english_country_name(self):
+        self.assertEqual(convert_inline("{{Flagicon|China}} 中国電影集団公司"), "中華人民共和国の旗 中国電影集団公司")
+        self.assertEqual(convert_inline("{{Flagicon|Japan}} 東宝東和"), "日本の旗 東宝東和")
+
     def test_country_template(self):
         self.assertEqual(convert_inline("{{USA}}"), "アメリカ合衆国の旗 アメリカ合衆国")
         self.assertEqual(convert_inline("{{FRA}}"), "フランスの旗 フランス")
+        self.assertEqual(convert_inline("{{PRC}}"), "中華人民共和国の旗 中華人民共和国")
 
     def test_lang_template(self):
         self.assertEqual(convert_inline("{{lang|en|Tangerine}}"), "Tangerine")
