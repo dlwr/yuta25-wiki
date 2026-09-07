@@ -10,6 +10,7 @@ from scripts.movie_page import (
     pick_article,
     pick_poster,
     section_bullets,
+    section_table_cast,
     wikipedia_url,
 )
 
@@ -106,6 +107,33 @@ WIKITEXT = (
 )
 
 
+CAST_TABLE = (
+    "== キャスト ==\n"
+    "{| class=\"wikitable\" style=\"text-align: center;\"\n"
+    "|-\n"
+    "! rowspan=2|役名\n"
+    "! rowspan=2|俳優\n"
+    "! colspan=2|日本語吹替\n"
+    "|-\n"
+    "! ソフト版\n"
+    "! [[フジテレビジョン|フジテレビ]]版\n"
+    "|-\n"
+    "| アーマンド・ゴールドマン || [[ロビン・ウィリアムズ]] || [[安原義人]] || [[羽佐間道夫]]\n"
+    "|-\n"
+    "| ケヴィン・キーリー上院議員 || [[ジーン・ハックマン]] || [[石森達幸]] || [[石田太郎]]\n"
+    "|-\n"
+    "| 本人役 || [[ジェイ・レノ]]<br />（クレジットなし） ||  || \n"
+    "|-\n"
+    "| その他 ||  || [[小室正幸]]<br>[[沢木郁也]] || [[秋元羊介]]\n"
+    "|-\n"
+    "|\n"
+    "|-\n"
+    "| 演出 ||  || 戸田清二郎 || 春日正伸\n"
+    "|}\n"
+    "\n== スタッフ ==\n* 監督：X\n"
+)
+
+
 class ParseInfoboxTest(unittest.TestCase):
     def test_returns_ordered_params_with_raw_values(self):
         params = parse_infobox(INFOBOX)
@@ -174,8 +202,28 @@ class LeadAndSectionTest(unittest.TestCase):
     def test_section_bullets_missing_section(self):
         self.assertEqual(section_bullets(WIKITEXT, "スタッフ"), [])
 
+    def test_section_table_cast_reads_role_and_actor(self):
+        self.assertEqual(
+            section_table_cast(CAST_TABLE, "キャスト"),
+            [
+                "アーマンド・ゴールドマン - [ロビン・ウィリアムズ]",
+                "ケヴィン・キーリー上院議員 - [ジーン・ハックマン]",
+                "本人役 - [ジェイ・レノ] （クレジットなし）",
+            ],
+        )
+
+    def test_section_table_cast_empty_without_table(self):
+        self.assertEqual(section_table_cast(WIKITEXT, "キャスト"), [])
+
+    def test_section_table_cast_missing_section(self):
+        self.assertEqual(section_table_cast(CAST_TABLE, "スタッフ"), [])
+
 
 class BuildBodyTest(unittest.TestCase):
+    def test_cast_from_table_when_no_bullets(self):
+        body = build_body("バードケージ", INFOBOX + "\n\n本文。\n\n" + CAST_TABLE)
+        self.assertIn("> アーマンド・ゴールドマン - [ロビン・ウィリアムズ]\n> ケヴィン・キーリー上院議員 - [ジーン・ハックマン]\n", body)
+
     def test_full_body(self):
         body = build_body("タンジェリン (映画)", WIKITEXT, poster="https://scrapbox.io/files/x.jpg")
         self.assertEqual(

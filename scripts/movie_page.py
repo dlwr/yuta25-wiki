@@ -221,11 +221,17 @@ def lead_paragraphs(text):
     return paragraphs
 
 
-def section_bullets(text, name):
+def section_body(text, name):
     m = re.search(rf"^==+\s*{re.escape(name)}\s*==+\s*$", text, re.MULTILINE)
     if not m:
+        return None
+    return text[m.end():].split("\n==", 1)[0]
+
+
+def section_bullets(text, name):
+    body = section_body(text, name)
+    if body is None:
         return []
-    body = text[m.end():].split("\n==", 1)[0]
     bullets = []
     for line in body.splitlines():
         if line.startswith("*") and not line.startswith("**"):
@@ -233,6 +239,30 @@ def section_bullets(text, name):
             if converted:
                 bullets.append(converted)
     return bullets
+
+
+def table_cell(raw):
+    raw = re.sub(r"^[^\[\]{}|]*=[^\[\]{}|]*\|", "", raw)
+    return convert_inline(re.sub(r"<br\s*/?>", " ", raw).strip())
+
+
+def section_table_cast(text, name):
+    body = section_body(text, name)
+    if body is None:
+        return []
+    m = re.search(r"^\{\|.*?^\|\}", body, re.DOTALL | re.MULTILINE)
+    if not m:
+        return []
+    cast = []
+    for row in re.split(r"^\|-.*$", m.group(0), flags=re.MULTILINE)[1:]:
+        cells = [c for line in row.splitlines() if line.startswith("|") and not line.startswith("|}")
+                 for c in line[1:].split("||")]
+        if len(cells) < 2:
+            continue
+        role, actor = table_cell(cells[0]), table_cell(cells[1])
+        if role and actor:
+            cast.append(f"{role} - {actor}")
+    return cast
 
 
 def wikipedia_url(article):
@@ -251,7 +281,7 @@ def build_body(article, wikitext, poster=None, impression=None):
     lines.extend([impression, ""] if impression else [""])
     lines.extend(f"> {p}" for p in lead_paragraphs(wikitext))
     lines.append("")
-    cast = section_bullets(wikitext, "キャスト")
+    cast = section_bullets(wikitext, "キャスト") or section_table_cast(wikitext, "キャスト")
     if cast:
         lines.extend(f"> {c}" for c in cast)
         lines.append("")
