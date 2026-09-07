@@ -280,6 +280,13 @@ def pick_article(hits):
     return hits[0]["title"] if hits else None
 
 
+def infobox_image(wikitext):
+    value = dict(parse_infobox(wikitext)).get("image", "")
+    value = re.sub(r"^\[\[|\]\]$", "", value).split("|")[0]
+    value = re.sub(r"^(?:File|Image):", "", value, flags=re.IGNORECASE).strip().replace("_", " ")
+    return f"File:{value}" if value else None
+
+
 def pick_poster(titles):
     for t in titles:
         if "poster" in t.lower():
@@ -302,8 +309,8 @@ def first_page(data):
     return next(iter(data["query"]["pages"].values()))
 
 
-def fetch_wikitext(article):
-    page = first_page(api("ja.wikipedia.org", action="query", prop="revisions", rvprop="content",
+def fetch_wikitext(article, host="ja.wikipedia.org"):
+    page = first_page(api(host, action="query", prop="revisions", rvprop="content",
                           rvslots="main", redirects=1, titles=article))
     if "missing" in page:
         sys.exit(f"記事が無い: {article}")
@@ -331,8 +338,10 @@ def cmd_poster(args):
     article = pick_article(hits)
     if not article:
         sys.exit("en.wikipedia に記事が無い")
-    page = first_page(api("en.wikipedia.org", action="query", prop="images", imlimit=50, titles=article))
-    chosen = pick_poster([i["title"] for i in page.get("images", [])])
+    chosen = infobox_image(fetch_wikitext(article, host="en.wikipedia.org"))
+    if not chosen:
+        page = first_page(api("en.wikipedia.org", action="query", prop="images", imlimit=50, titles=article))
+        chosen = pick_poster([i["title"] for i in page.get("images", [])])
     if not chosen:
         sys.exit(f"ポスターが無い: {article}")
     info = first_page(api("en.wikipedia.org", action="query", prop="imageinfo", iiprop="url", titles=chosen))

@@ -3,6 +3,7 @@ import unittest
 from scripts.movie_page import (
     build_body,
     convert_inline,
+    infobox_image,
     infobox_rows,
     lead_paragraphs,
     parse_infobox,
@@ -248,6 +249,20 @@ class HelpersTest(unittest.TestCase):
 
     def test_pick_poster_none_when_only_svg(self):
         self.assertIsNone(pick_poster(["File:Icon.svg"]))
+
+    def test_infobox_image_reads_image_param(self):
+        text = "{{Infobox film\n| name = The Birdcage\n| image = Birdcage_imp.jpg\n| director = [[Mike Nichols]]\n}}"
+        self.assertEqual(infobox_image(text), "File:Birdcage imp.jpg")
+
+    def test_infobox_image_strips_file_link(self):
+        text = "{{Infobox film\n| image = [[File:Tangerine poster.jpg|220px|alt=Poster]]\n}}"
+        self.assertEqual(infobox_image(text), "File:Tangerine poster.jpg")
+
+    def test_infobox_image_none_when_empty(self):
+        self.assertIsNone(infobox_image("{{Infobox film\n| image = \n| director = X\n}}"))
+
+    def test_infobox_image_none_without_infobox(self):
+        self.assertIsNone(infobox_image("plain text"))
 
 
 if __name__ == "__main__":
