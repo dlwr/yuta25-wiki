@@ -1,6 +1,7 @@
 {
   "permissions": {
     "allow": [
+      "Bash(cosense submitEdit:*)",
       "Bash(cosense whoami:*)",
       "Bash(cosense listProjects:*)",
       "Bash(cosense browsePage:*)",
@@ -36,9 +37,6 @@
       "mcp__claude-in-chrome__read_page",
       "mcp__claude-in-chrome__find"
     ],
-    "ask": [
-      "Bash(cosense submitEdit:*)"
-    ],
     "deny": [
       "Bash(cosense previewDelete:*)",
       "Bash(cosense replaceLinks:*)",
@@ -55,6 +53,7 @@
       "mcp__claude_ai_Gmail__update_message_labels",
       "mcp__claude_ai_Gmail__mark_message_spam",
       "mcp__claude_ai_Gmail__mark_thread_spam"
-    ]
+    ],
+    "ask": []
   }
 }
