@@ -384,6 +384,11 @@ class EigaMovieIdTest(unittest.TestCase):
 
         self.assertEqual(eiga_movie_id("97635"), "97635")
 
+    def test_photo_page_url(self):
+        from scripts.movie_page import eiga_movie_id
+
+        self.assertEqual(eiga_movie_id("https://eiga.com/movie/97635/photo/"), "97635")
+
     def test_unrelated_url(self):
         from scripts.movie_page import eiga_movie_id
 

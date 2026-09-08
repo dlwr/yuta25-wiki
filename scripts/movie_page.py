@@ -41,7 +41,7 @@ DROP_LINK_PREFIXES = ("ファイル:", "file:", "画像:", "image:", "category:"
 TEMPLATE = re.compile(r"\{\{([^{}]*)\}\}", re.DOTALL)
 EIGA_POSTER_BLOCK = re.compile(r'class="poster-img".*?</div>', re.DOTALL)
 EIGA_POSTER_SRC = re.compile(r'src="(https://media\.eiga\.com/images/movie/\d+/photo/[^"/]+)/\d+\.jpg"')
-EIGA_MOVIE_ID = re.compile(r"^(?:https?://eiga\.com/movie/)?(\d+)/?$")
+EIGA_MOVIE_ID = re.compile(r"^(?:https?://eiga\.com/movie/)?(\d+)(?:/.*)?$")
 LINK = re.compile(r"\[\[([^\[\]|]*)(?:\|([^\[\]]*))?\]\]")
 
 
