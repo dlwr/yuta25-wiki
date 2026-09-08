@@ -3,7 +3,8 @@
 
   movie_page.py search <邦題>                                   記事候補を出す
   movie_page.py body <記事名> [--poster URL] [--impression TEXT] [--wikitext FILE]
-  movie_page.py poster <記事名> --out <path>                     en.wikipedia のポスターを保存する
+  movie_page.py poster <記事名> --out <path> [--eiga URL|ID]     ポスターを保存する
+                                                                --eiga 無しは en.wikipedia、有りは映画.com から取る
 """
 import argparse
 import html
@@ -38,6 +39,9 @@ PLAIN_PARAMS = {"公開", "上映時間", "製作国", "言語", "製作費", "�
 DROP_LINK_PREFIXES = ("ファイル:", "file:", "画像:", "image:", "category:", "カテゴリ:")
 
 TEMPLATE = re.compile(r"\{\{([^{}]*)\}\}", re.DOTALL)
+EIGA_POSTER_BLOCK = re.compile(r'class="poster-img".*?</div>', re.DOTALL)
+EIGA_POSTER_SRC = re.compile(r'src="(https://media\.eiga\.com/images/movie/\d+/photo/[^"/]+)/\d+\.jpg"')
+EIGA_MOVIE_ID = re.compile(r"^(?:https?://eiga\.com/movie/)?(\d+)(?:/.*)?$")
 LINK = re.compile(r"\[\[([^\[\]|]*)(?:\|([^\[\]]*))?\]\]")
 
 
@@ -327,6 +331,19 @@ def pick_poster(titles):
     return None
 
 
+def eiga_poster_url(page):
+    block = EIGA_POSTER_BLOCK.search(page)
+    if not block:
+        return None
+    src = EIGA_POSTER_SRC.search(block.group(0))
+    return f"{src.group(1)}.jpg" if src else None
+
+
+def eiga_movie_id(value):
+    m = EIGA_MOVIE_ID.match(value.strip())
+    return m.group(1) if m else None
+
+
 def api(host, **params):
     params["format"] = "json"
     url = f"https://{host}/w/api.php?" + urllib.parse.urlencode(params)
@@ -358,28 +375,48 @@ def cmd_body(args):
     sys.stdout.write(build_body(args.article, wikitext, poster=args.poster, impression=args.impression))
 
 
-def cmd_poster(args):
-    original, year = original_and_year(fetch_wikitext(args.article))
+def fetch_bytes(url):
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(req) as res:
+        return res.read()
+
+
+def wikipedia_poster(article):
+    original, year = original_and_year(fetch_wikitext(article))
     if not original:
         sys.exit("Infobox に原題が無い")
     hits = []
     for query in (f'"{original}" {year or ""} film', f"{original} {year or ''} film"):
         hits += api("en.wikipedia.org", action="query", list="search", srsearch=query, srlimit=5)["query"]["search"]
-    article = pick_article(hits)
-    if not article:
+    en_article = pick_article(hits)
+    if not en_article:
         sys.exit("en.wikipedia に記事が無い")
-    chosen = infobox_image(fetch_wikitext(article, host="en.wikipedia.org"))
+    chosen = infobox_image(fetch_wikitext(en_article, host="en.wikipedia.org"))
     if not chosen:
-        page = first_page(api("en.wikipedia.org", action="query", prop="images", imlimit=50, titles=article))
+        page = first_page(api("en.wikipedia.org", action="query", prop="images", imlimit=50, titles=en_article))
         chosen = pick_poster([i["title"] for i in page.get("images", [])])
     if not chosen:
-        sys.exit(f"ポスターが無い: {article}")
+        sys.exit(f"ポスターが無い: {en_article}")
     info = first_page(api("en.wikipedia.org", action="query", prop="imageinfo", iiprop="url", titles=chosen))
-    url = info["imageinfo"][0]["url"]
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req) as res, open(args.out, "wb") as f:
-        f.write(res.read())
-    print(f"{args.out}\t{article}\t{url}")
+    return en_article, info["imageinfo"][0]["url"]
+
+
+def eiga_poster(value):
+    movie_id = eiga_movie_id(value)
+    if not movie_id:
+        sys.exit(f"映画.com の作品 URL か ID ではない: {value}")
+    page = fetch_bytes(f"https://eiga.com/movie/{movie_id}/").decode("utf-8", "replace")
+    url = eiga_poster_url(page)
+    if not url:
+        sys.exit(f"映画.com にポスターが無い: {movie_id}")
+    return f"eiga.com/movie/{movie_id}", url
+
+
+def cmd_poster(args):
+    source, url = eiga_poster(args.eiga) if args.eiga else wikipedia_poster(args.article)
+    with open(args.out, "wb") as f:
+        f.write(fetch_bytes(url))
+    print(f"{args.out}\t{source}\t{url}")
 
 
 def main():
@@ -397,6 +434,7 @@ def main():
     p = sub.add_parser("poster")
     p.add_argument("article")
     p.add_argument("--out", required=True)
+    p.add_argument("--eiga")
     p.set_defaults(func=cmd_poster)
     args = parser.parse_args()
     args.func(args)

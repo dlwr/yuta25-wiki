@@ -338,3 +338,58 @@ class OriginalAndYearTest(unittest.TestCase):
         from scripts.movie_page import original_and_year
 
         self.assertEqual(original_and_year("本文"), (None, None))
+
+
+EIGA_POSTER_HTML = """<div class="movie-information">
+<div class="poster-img">
+<a class="icon-movie-poster" href="/movie/97635/photo/"><img width="92" loading="eager" alt="ぬいぐるみとしゃべる人はやさしい" src="https://media.eiga.com/images/movie/97635/photo/436d30e2eeac7931/160.jpg" /></a>
+</div>
+<h2>スタッフ</h2>
+<img src="https://media.eiga.com/images/person/317187/f23527b08a73a3aa/160.jpg" />
+</div>"""
+
+EIGA_NO_POSTER_HTML = """<div class="poster-img">
+<img src="https://media.eiga.com/images/assets/no_poster_image.png" width="92" height="118" loading="lazy" alt="" />
+</div>"""
+
+
+class EigaPosterUrlTest(unittest.TestCase):
+    def test_full_size_url_drops_thumbnail_suffix(self):
+        from scripts.movie_page import eiga_poster_url
+
+        self.assertEqual(
+            eiga_poster_url(EIGA_POSTER_HTML),
+            "https://media.eiga.com/images/movie/97635/photo/436d30e2eeac7931.jpg",
+        )
+
+    def test_placeholder_is_not_a_poster(self):
+        from scripts.movie_page import eiga_poster_url
+
+        self.assertIsNone(eiga_poster_url(EIGA_NO_POSTER_HTML))
+
+    def test_none_without_poster_block(self):
+        from scripts.movie_page import eiga_poster_url
+
+        self.assertIsNone(eiga_poster_url("<div class=\"movie-information\"></div>"))
+
+
+class EigaMovieIdTest(unittest.TestCase):
+    def test_url(self):
+        from scripts.movie_page import eiga_movie_id
+
+        self.assertEqual(eiga_movie_id("https://eiga.com/movie/97635/"), "97635")
+
+    def test_bare_id(self):
+        from scripts.movie_page import eiga_movie_id
+
+        self.assertEqual(eiga_movie_id("97635"), "97635")
+
+    def test_photo_page_url(self):
+        from scripts.movie_page import eiga_movie_id
+
+        self.assertEqual(eiga_movie_id("https://eiga.com/movie/97635/photo/"), "97635")
+
+    def test_unrelated_url(self):
+        from scripts.movie_page import eiga_movie_id
+
+        self.assertIsNone(eiga_movie_id("https://eiga.com/person/317187/"))
