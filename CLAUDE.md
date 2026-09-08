@@ -8,6 +8,10 @@ scrapbox.io/yuta25（Cosense。3000 ページ超、公開、誰でも編集可�
 - Amazon 注文履歴・U-NEXT 視聴履歴はログインが要るので Chrome 拡張（mcp__claude-in-chrome__*）で動作中の Chrome を使う。agent-browser は `--profile` でもログインを引き継げない
 - Gmail は claude.ai の Gmail 連携。検索と閲覧のみ
 
+## このリポジトリの変更
+
+- main に直接コミットして push する。ブランチも PR も作らない（グローバルの CLAUDE.md より優先）
+
 ## 原則
 
 - 密度の高いリンク: 既存ページと結べる箇所を探して結ぶ。リンク付けと診断の基準
