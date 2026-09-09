@@ -49,7 +49,7 @@ scrapbox.io/yuta25（Cosense。3000 ページ超、公開、誰でも編集可�
 
 ## ファイル
 
-- `ledger/<source>.jsonl`: 候補ごとの added / skipped。コミットする
+- `ledger/<source>.jsonl`: 候補ごとの added / skipped。購入・視聴履歴が残るのでコミットしない
 - `reports/YYYY-MM-DD.md`: 診断レポート。コミットする
 - `tmp/`: スナップショット。gitignore
 - `scripts/snapshot.sh`: titles API と listPages で tmp/ を作る

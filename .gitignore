@@ -3,3 +3,4 @@ __pycache__/
 !.claude/
 !.claude/**
 .claude/settings.local.json
+ledger/*.jsonl
