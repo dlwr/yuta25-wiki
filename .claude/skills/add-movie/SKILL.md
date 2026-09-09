@@ -12,7 +12,7 @@ description: 見た映画のページを Cosense に作り、「YYYY seen, read,
 3. ポスターを取る
    - 前回の残りを消す: `rm -f tmp/poster.jpg`
    - `python3 scripts/movie_page.py poster '<記事名>' --out tmp/poster.jpg`
-   - exit 1（原題が無い、en.wikipedia に無い、ポスターが無い）なら映画.com から取る。`映画.com <邦題> <公開年>` で web 検索して作品ページ `https://eiga.com/movie/<id>/` を見つけ、`--eiga <URL>` を付けて実行し直す。eiga.com の `/search/` は robots.txt で禁じられているので URL は web 検索で探す
+   - exit 1（原題が無い、en.wikipedia に無い、ポスターが無い）なら映画.com から取る。`映画.com <邦題> <公開年>` で web 検索して作品ページ `https://eiga.com/movie/<id>/` を見つけ、`--eiga <URL>` を付けて実行し直す。eiga.com の `/search/` は robots.txt の Disallow なので叩かない。URL は web 検索で得る
    - ここでも exit 1 ならポスター無しで進む
    - `cosense uploadFile https://scrapbox.io/yuta25 tmp/poster.jpg` の embedUrl を控える
 4. ページを作る
