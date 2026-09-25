@@ -1,4 +1,13 @@
 {
-  "since": 1790299065,
-  "sent": {}
+  "since": 1790342620,
+  "sent": {
+    "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
+      "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-09-26T04:08:18+09:00",
+        "attempts": 1
+      }
+    }
+  }
 }
