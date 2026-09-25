@@ -26,7 +26,7 @@ IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg")
 MAX_ATTEMPTS = 3
 JST = timezone(timedelta(hours=9))
 
-URL = re.compile(r"https?://[^\s\[\]`<>\"\x7f-\U0010ffff]+")
+URL = re.compile(r"https?://[^\s\[\]`<>\"]+")
 BACKQUOTED = re.compile(r"`[^`]*`")
 
 
@@ -40,9 +40,11 @@ def excluded(url):
 
 def trim(url):
     while url:
-        if url[-1] in ".,;:!?'":
+        if url[-1] in ".,;:!?'。、，．！？」』】》〉":
             url = url[:-1]
         elif url[-1] == ")" and url.count("(") < url.count(")"):
+            url = url[:-1]
+        elif url[-1] == "）" and url.count("（") < url.count("）"):
             url = url[:-1]
         else:
             break
@@ -156,7 +158,11 @@ def run(state, list_pages, get_page, deliver, now, dry_run=False, log=print):
         if dry_run:
             log(f"{source}\t{target}")
             return
-        status, code = deliver(source, target)
+        try:
+            status, code = deliver(source, target)
+        except Exception as e:
+            log(f"error\t{e!r}\t{source}\t{target}")
+            status, code = "retry", None
         entry = sent.setdefault(source, {}).get(target, {})
         attempts = entry.get("attempts", 0) + 1
         if status == "retry" and attempts >= MAX_ATTEMPTS:
@@ -192,6 +198,7 @@ def public_host(url):
 
 
 def request(url, data=None):
+    url = urllib.parse.quote(url, safe=":/?#[]@!$&'()*+,;=%~")
     req = urllib.request.Request(url, data=data, headers={"User-Agent": UA})
     return urllib.request.urlopen(req, timeout=10)
 

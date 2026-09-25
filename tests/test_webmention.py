@@ -32,6 +32,15 @@ class ExtractLinksTest(unittest.TestCase):
     def test_strips_trailing_punctuation(self):
         self.assertEqual(extract_links("（https://example.com/a）。"), ["https://example.com/a"])
 
+    def test_keeps_non_ascii_path_as_written(self):
+        self.assertEqual(
+            extract_links("[https://ja.wikipedia.org/wiki/007/ゴールドフィンガー_(映画) wp]"),
+            ["https://ja.wikipedia.org/wiki/007/ゴールドフィンガー_(映画)"],
+        )
+
+    def test_strips_trailing_fullwidth_bracket(self):
+        self.assertEqual(extract_links("「https://t.co/exNoqWqYfH」"), ["https://t.co/exNoqWqYfH"])
+
     def test_excludes_own_and_image_hosts(self):
         text = "https://scrapbox.io/yuta25/x https://gyazo.com/abc https://i.gyazo.com/abc.png https://yuta25.on.bolg.in/p/1"
         self.assertEqual(extract_links(text), [])
@@ -213,6 +222,14 @@ class RunTest(unittest.TestCase):
         state = self.run_once(state)
         self.assertEqual(len(self.sent), 3)
         self.assertEqual(state["sent"]["https://scrapbox.io/yuta25/p"]["https://example.com/a"]["status"], "gave_up")
+
+    def test_records_retry_when_delivery_raises(self):
+        def broken(source, target):
+            self.sent.append((source, target))
+            raise ValueError("bad endpoint")
+
+        state = run({"since": 100, "sent": {}}, self.scrapbox.list, self.scrapbox.page, broken, now=lambda: "T", log=lambda _: None)
+        self.assertEqual(state["sent"]["https://scrapbox.io/yuta25/p"]["https://example.com/a"]["status"], "retry")
 
     def test_dry_run_does_not_touch_state(self):
         state = {"since": 100, "sent": {}}
