@@ -58,6 +58,8 @@ scrapbox.io/yuta25（Cosense。3000 ページ超、公開、誰でも編集可�
 - `scripts/movie_page.py`: ja.wikipedia の記事から映画ページの本文とポスターを作る
 - `scripts/seen_frame.py`: seen の枠行を埋める ops を出す
 - `scripts/wiki_draft.py`: Wikidata の外部 ID、他言語版の本文と oldid、ja でのリンク先の有無、要約欄の文面を出す
+- `scripts/webmention.py`: 自分が新しく書いた行の外部リンクへ Webmention を送る。GitHub Actions（`.github/workflows/webmention.yml`）が毎日実行する
+- `webmention-state` ブランチ: 送信記録 `webmention.json`。orphan で main とは独立。workflow が `state/` に checkout してコミットする
 - テストは `python3 -m unittest discover -s tests -t .`
 
 ## スキル
