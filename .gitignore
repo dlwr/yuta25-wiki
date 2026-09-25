@@ -4,3 +4,4 @@ __pycache__/
 !.claude/**
 .claude/settings.local.json
 ledger/*.jsonl
+state/
