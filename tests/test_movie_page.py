@@ -212,6 +212,14 @@ class LeadAndSectionTest(unittest.TestCase):
             ],
         )
 
+    def test_section_table_cast_drops_multiline_ref(self):
+        table = (
+            "== キャスト ==\n{| class=\"wikitable\"\n! 役名 !! 俳優\n|-\n"
+            "| 日本人セールスマン || [[芳賀健介]]<ref name=\"afi\">{{Cite web\n |title=Cast\n}}</ref>、鹿子木亮平<ref name=\"afi\" /> || \n"
+            "|-\n|}\n"
+        )
+        self.assertEqual(section_table_cast(table, "キャスト"), ["日本人セールスマン - [芳賀健介]、鹿子木亮平"])
+
     def test_section_table_cast_empty_without_table(self):
         self.assertEqual(section_table_cast(WIKITEXT, "キャスト"), [])
 

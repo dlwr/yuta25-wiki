@@ -257,8 +257,9 @@ def section_table_cast(text, name):
     m = re.search(r"^\{\|.*?^\|\}", body, re.DOTALL | re.MULTILINE)
     if not m:
         return []
+    table = re.sub(r"<ref\b[^>]*>.*?</ref>", "", m.group(0), flags=re.DOTALL)
     cast = []
-    for row in re.split(r"^\|-.*$", m.group(0), flags=re.MULTILINE)[1:]:
+    for row in re.split(r"^\|-.*$", table, flags=re.MULTILINE)[1:]:
         cells = [c for line in row.splitlines() if line.startswith("|") and not line.startswith("|}")
                  for c in line[1:].split("||")]
         if len(cells) < 2:
