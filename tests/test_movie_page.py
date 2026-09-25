@@ -292,6 +292,14 @@ class HelpersTest(unittest.TestCase):
     def test_pick_article_falls_back_to_first_hit(self):
         self.assertEqual(pick_article([{"title": "Inception"}, {"title": "Christopher Nolan"}]), "Inception")
 
+    def test_pick_article_skips_film_of_other_year(self):
+        hits = [{"title": "The Goodbye Girl"}, {"title": "35th Golden Globes"}, {"title": "The Goodbye Girl (2004 film)"}]
+        self.assertEqual(pick_article(hits, year="1977"), "The Goodbye Girl")
+
+    def test_pick_article_prefers_film_of_same_year(self):
+        hits = [{"title": "Dune (1984 film)"}, {"title": "Dune (2021 film)"}]
+        self.assertEqual(pick_article(hits, year="2021"), "Dune (2021 film)")
+
     def test_pick_article_none_without_hits(self):
         self.assertIsNone(pick_article([]))
 

@@ -307,11 +307,14 @@ def original_and_year(wikitext):
     return original, year.group(0) if year else None
 
 
-def pick_article(hits):
-    for h in hits:
-        if re.search(r"\((?:\d{4} )?[^()]*film\)$", h["title"]):
-            return h["title"]
-    return hits[0]["title"] if hits else None
+def pick_article(hits, year=None):
+    titles = [h["title"] for h in hits]
+    if year:
+        titles = [t for t in titles if re.search(r"\((\d{4}) [^()]*film\)$", t) is None or f"({year} " in t]
+    for t in titles:
+        if re.search(r"\((?:\d{4} )?[^()]*film\)$", t):
+            return t
+    return titles[0] if titles else None
 
 
 def infobox_image(wikitext):
@@ -388,7 +391,7 @@ def wikipedia_poster(article):
     hits = []
     for query in (f'"{original}" {year or ""} film', f"{original} {year or ''} film"):
         hits += api("en.wikipedia.org", action="query", list="search", srsearch=query, srlimit=5)["query"]["search"]
-    en_article = pick_article(hits)
+    en_article = pick_article(hits, year)
     if not en_article:
         sys.exit("en.wikipedia に記事が無い")
     chosen = infobox_image(fetch_wikitext(en_article, host="en.wikipedia.org"))
