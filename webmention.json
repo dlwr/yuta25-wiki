@@ -1,5 +1,5 @@
 {
-  "since": 1791072208,
+  "since": 1791199426,
   "sent": {
     "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
       "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
@@ -42,6 +42,20 @@
         "status": "no_endpoint",
         "code": null,
         "at": "2026-10-03T04:46:46+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%83%88%E3%83%AA%E3%81%A8%E3%83%AD%E3%82%AD%E3%82%BF": {
+      "https://eiga.com/movie/97010/": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-06T06:50:49+09:00",
+        "attempts": 1
+      },
+      "https://ja.wikipedia.org/wiki/%E3%83%88%E3%83%AA%E3%81%A8%E3%83%AD%E3%82%AD%E3%82%BF": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-06T06:50:51+09:00",
         "attempts": 1
       }
     }
