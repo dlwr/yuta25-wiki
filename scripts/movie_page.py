@@ -2,7 +2,7 @@
 """ja.wikipedia の映画記事から、既存の映画ページと同じ並びの Cosense 本文を作る。
 
   movie_page.py search <邦題>                                   記事候補を出す
-  movie_page.py body <記事名> [--poster URL] [--impression TEXT] [--wikitext FILE]
+  movie_page.py body <記事名> [--poster URL] [--eiga URL|ID] [--impression TEXT] [--wikitext FILE]
   movie_page.py poster <記事名> --out <path> [--eiga URL|ID]     ポスターを保存する
                                                                 --eiga 無しは en.wikipedia、有りは映画.com から取る
 """
@@ -278,7 +278,7 @@ def wikipedia_url(article):
     return "https://ja.wikipedia.org/wiki/" + urllib.parse.quote(article.replace(" ", "_"), safe="()_,!:/'")
 
 
-def build_body(article, wikitext, poster=None, impression=None):
+def build_body(article, wikitext, poster=None, impression=None, eiga=None):
     params = parse_infobox(wikitext)
     named = dict(params)
     title = convert_inline(named.get("作品名", ""), keep_links=False) or re.sub(r"\s*\([^()]*\)$", "", article)
@@ -286,6 +286,8 @@ def build_body(article, wikitext, poster=None, impression=None):
     lines = [title]
     if poster:
         lines.append(f"[{poster}]")
+    if eiga:
+        lines.append(f"[https://eiga.com/movie/{eiga_movie_id(eiga)}/ 映画.com]")
     lines.append("")
     lines.extend([impression, ""] if impression else [""])
     lines.extend(f"> {p}" for p in lead_paragraphs(wikitext))
@@ -384,7 +386,7 @@ def cmd_search(args):
 
 def cmd_body(args):
     wikitext = open(args.wikitext, encoding="utf-8").read() if args.wikitext else fetch_wikitext(args.article)
-    sys.stdout.write(build_body(args.article, wikitext, poster=args.poster, impression=args.impression))
+    sys.stdout.write(build_body(args.article, wikitext, poster=args.poster, impression=args.impression, eiga=args.eiga))
 
 
 def fetch_bytes(url):
@@ -444,6 +446,7 @@ def main():
     p.add_argument("article")
     p.add_argument("--poster")
     p.add_argument("--impression")
+    p.add_argument("--eiga")
     p.add_argument("--wikitext")
     p.set_defaults(func=cmd_body)
     p = sub.add_parser("poster")

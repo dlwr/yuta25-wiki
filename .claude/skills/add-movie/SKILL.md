@@ -16,7 +16,7 @@ description: 見た映画のページを Cosense に作り、「YYYY seen, read,
    - ここでも exit 1 ならポスター無しで進む
    - `cosense uploadFile https://scrapbox.io/yuta25 tmp/poster.jpg` の embedUrl を控える
 4. ページを作る
-   - `python3 scripts/movie_page.py body '<記事名>' --poster <embedUrl> [--impression '<感想>'] > tmp/body.txt`
+   - `python3 scripts/movie_page.py body '<記事名>' --poster <embedUrl> [--eiga <URL>] [--impression '<感想>'] > tmp/body.txt`。ポスターを映画.com から取ったときは同じ `--eiga <URL>` を付ける（ポスターの下に出典のリンク行が入る）
    - 本文を読む。キャストの `>` 行が 10 行を超えるなら、`table:info` の出演者に載っている人物の行だけ残す。それ以外は手で直さない
    - `cosense previewEdit --new --input-file tmp/body.txt https://scrapbox.io/yuta25` の出力を見せて `cosense submitEdit`。previewId は 5 分で切れるので、preview と submit は 1 つのコマンドで続けて実行する（submitEdit の確認プロンプトが承認になる）
 5. seen の枠を埋める（YYYY は視聴日の年）

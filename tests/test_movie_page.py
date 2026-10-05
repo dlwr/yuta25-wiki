@@ -274,6 +274,10 @@ class BuildBodyTest(unittest.TestCase):
         body = build_body("タンジェリン (映画)", WIKITEXT, impression="良かった")
         self.assertTrue(body.startswith("タンジェリン\n\n良かった\n\n> 『タンジェリン』"))
 
+    def test_eiga_poster_source_line_under_poster(self):
+        body = build_body("タンジェリン (映画)", WIKITEXT, poster="https://scrapbox.io/files/x.jpg", eiga="https://eiga.com/movie/97010/")
+        self.assertTrue(body.startswith("タンジェリン\n[https://scrapbox.io/files/x.jpg]\n[https://eiga.com/movie/97010/ 映画.com]\n\n"))
+
     def test_title_falls_back_to_article_title_without_disambiguation(self):
         body = build_body("二百三高地", "{{Infobox Film\n| 監督 = [[舛田利雄]]\n}}\n本文。\n")
         self.assertTrue(body.startswith("二百三高地\n\n\n> 本文。\n\ntable:info\n\t監督\t[舛田利雄]\n"))
