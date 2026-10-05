@@ -3,6 +3,7 @@ import unittest
 from scripts.movie_page import (
     build_body,
     convert_inline,
+    en_langlink,
     infobox_image,
     infobox_rows,
     lead_paragraphs,
@@ -178,6 +179,10 @@ class InfoboxRowsTest(unittest.TestCase):
     def test_budget_label_is_normalized(self):
         self.assertIn(("製作費", ["$100,000"]), self.rows)
 
+    def test_plainlist_items_with_named_ref_are_kept(self):
+        text = '{{Infobox Film\n| 公開 = {{Plainlist|\n* {{flagicon|BEL}} 2022年9月7日<ref name="pm"/>\n* {{flagicon|JPN}} 2023年3月31日<ref name="eiga">{{Cite web|url=https://eiga.com/|title=x}}</ref>\n}}\n}}'
+        self.assertEqual(infobox_rows(parse_infobox(text)), [("公開", ["ベルギーの旗 2022年9月7日", "日本の旗 2023年3月31日"])])
+
     def test_keeps_wikipedia_order(self):
         labels = [r[0] for r in self.rows]
         self.assertEqual(labels, ["監督", "製作総指揮", "脚本", "配給", "公開", "上映時間", "製作国", "言語", "製作費"])
@@ -307,6 +312,13 @@ class HelpersTest(unittest.TestCase):
     def test_pick_article_prefers_film_of_same_year(self):
         hits = [{"title": "Dune (1984 film)"}, {"title": "Dune (2021 film)"}]
         self.assertEqual(pick_article(hits, year="2021"), "Dune (2021 film)")
+
+    def test_en_langlink_reads_en_title(self):
+        page = {"title": "トリとロキタ", "langlinks": [{"lang": "en", "*": "Tori and Lokita"}]}
+        self.assertEqual(en_langlink(page), "Tori and Lokita")
+
+    def test_en_langlink_none_without_langlinks(self):
+        self.assertIsNone(en_langlink({"title": "トリとロキタ"}))
 
     def test_pick_article_none_without_hits(self):
         self.assertIsNone(pick_article([]))

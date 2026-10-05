@@ -120,10 +120,14 @@ def convert_link(m, keep_links):
     return f"[{display}]"
 
 
-def convert_inline(text, keep_links=True):
+def strip_comments_and_refs(text):
     text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
     text = re.sub(r"<ref\b[^>]*/>", "", text)
-    text = re.sub(r"<ref\b[^>]*>.*?</ref>", "", text, flags=re.DOTALL)
+    return re.sub(r"<ref\b[^>]*>.*?</ref>", "", text, flags=re.DOTALL)
+
+
+def convert_inline(text, keep_links=True):
+    text = strip_comments_and_refs(text)
     text = render_templates(text, keep_links)
     text = strip_prefixed_links(text)
     text = LINK.sub(lambda m: convert_link(m, keep_links), text)
@@ -201,7 +205,7 @@ def infobox_rows(params):
         if key in SKIP_PARAMS or not raw:
             continue
         keep_links = key not in PLAIN_PARAMS
-        rendered = render_templates(raw, keep_links)
+        rendered = render_templates(strip_comments_and_refs(raw), keep_links)
         values = []
         for part in re.split(r"<br\s*/?>|\n", rendered):
             value = convert_inline(re.sub(r"^\*\s*", "", part.strip()), keep_links)
@@ -318,6 +322,10 @@ def pick_article(hits, year=None):
     return titles[0] if titles else None
 
 
+def en_langlink(page):
+    return next((l["*"] for l in page.get("langlinks", []) if l["lang"] == "en"), None)
+
+
 def infobox_image(wikitext):
     value = dict(parse_infobox(wikitext)).get("image", "")
     value = re.sub(r"^\[\[|\]\]$", "", value).split("|")[0]
@@ -386,13 +394,16 @@ def fetch_bytes(url):
 
 
 def wikipedia_poster(article):
-    original, year = original_and_year(fetch_wikitext(article))
-    if not original:
-        sys.exit("Infobox に原題が無い")
-    hits = []
-    for query in (f'"{original}" {year or ""} film', f"{original} {year or ''} film"):
-        hits += api("en.wikipedia.org", action="query", list="search", srsearch=query, srlimit=5)["query"]["search"]
-    en_article = pick_article(hits, year)
+    en_article = en_langlink(first_page(api("ja.wikipedia.org", action="query", prop="langlinks",
+                                            lllang="en", redirects=1, titles=article)))
+    if not en_article:
+        original, year = original_and_year(fetch_wikitext(article))
+        if not original:
+            sys.exit("Infobox に原題が無い")
+        hits = []
+        for query in (f'"{original}" {year or ""} film', f"{original} {year or ''} film"):
+            hits += api("en.wikipedia.org", action="query", list="search", srsearch=query, srlimit=5)["query"]["search"]
+        en_article = pick_article(hits, year)
     if not en_article:
         sys.exit("en.wikipedia に記事が無い")
     chosen = infobox_image(fetch_wikitext(en_article, host="en.wikipedia.org"))
