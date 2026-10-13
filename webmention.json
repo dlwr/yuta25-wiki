@@ -1,5 +1,5 @@
 {
-  "since": 1791763407,
+  "since": 1791863370,
   "sent": {
     "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
       "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
@@ -64,6 +64,22 @@
         "status": "no_endpoint",
         "code": null,
         "at": "2026-10-07T04:59:00+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%83%91%E3%83%83%E3%83%88%E3%83%B3%E5%A4%A7%E6%88%A6%E8%BB%8A%E8%BB%8D%E5%9B%A3": {
+      "https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%83%E3%83%88%E3%83%B3%E5%A4%A7%E6%88%A6%E8%BB%8A%E8%BB%8D%E5%9B%A3": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-14T05:31:07+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%81%95%E3%81%96%E3%81%AA%E3%81%BF": {
+      "https://ja.wikipedia.org/wiki/%E3%81%95%E3%81%96%E3%81%AA%E3%81%BF_(%E6%98%A0%E7%94%BB)": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-14T05:31:12+09:00",
         "attempts": 1
       }
     }
