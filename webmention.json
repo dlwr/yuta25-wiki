@@ -1,5 +1,5 @@
 {
-  "since": 1792368174,
+  "since": 1792547261,
   "sent": {
     "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
       "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
@@ -88,6 +88,12 @@
         "status": "no_endpoint",
         "code": null,
         "at": "2026-10-15T04:11:22+09:00",
+        "attempts": 1
+      },
+      "https://anond.hatelabo.jp/20151021143141": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-22T04:07:53+09:00",
         "attempts": 1
       }
     },
