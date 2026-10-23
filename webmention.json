@@ -1,5 +1,5 @@
 {
-  "since": 1792659966,
+  "since": 1792737043,
   "sent": {
     "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
       "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
@@ -95,6 +95,12 @@
         "code": null,
         "at": "2026-10-22T04:07:53+09:00",
         "attempts": 1
+      },
+      "https://anond.hatelabo.jp/20131023230541": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:41+09:00",
+        "attempts": 1
       }
     },
     "https://scrapbox.io/yuta25/bolg.in_2026-10-15": {
@@ -110,6 +116,52 @@
         "status": "no_endpoint",
         "code": null,
         "at": "2026-10-23T04:03:41+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%83%AD%E3%83%9E%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0_%E3%82%B5%E3%82%AC2_%E3%83%AA%E3%83%99%E3%83%B3%E3%82%B8%E3%82%AA%E3%83%96%E3%82%B6%E3%82%BB%E3%83%96%E3%83%B3": {
+      "https://open.spotify.com/intl-ja/track/77rVf6pVQySUCysceilc7Y?si=3d77912f65644905": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:42+09:00",
+        "attempts": 1
+      },
+      "https://open.spotify.com/intl-ja/track/438maXpQj3RVC8Kr9EY4er?si=67605bc7cbe34c84": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:44+09:00",
+        "attempts": 1
+      },
+      "https://open.spotify.com/track/0FD0kpDyx6HRJm2gGozYZC": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:45+09:00",
+        "attempts": 1
+      },
+      "https://open.spotify.com/track/2NpHfTbE6tpKPoHAn27ULC": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:47+09:00",
+        "attempts": 1
+      },
+      "https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%9E%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0_%E3%82%B5%E3%83%BB%E3%82%AC2": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:48+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%82%B7%E3%82%B3%E3%81%B5%E3%82%93%E3%81%98%E3%82%83%E3%81%A3%E3%81%9F%E3%80%82": {
+      "https://www.asahi.com/articles/ASVBG2D0XVBGULLI001M.html": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:50+09:00",
+        "attempts": 1
+      },
+      "https://ja.wikipedia.org/wiki/%E3%82%B7%E3%82%B3%E3%81%B5%E3%82%93%E3%81%98%E3%82%83%E3%81%A3%E3%81%9F%E3%80%82": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-24T03:53:51+09:00",
         "attempts": 1
       }
     }
