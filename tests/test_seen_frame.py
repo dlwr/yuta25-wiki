@@ -45,8 +45,18 @@ class OpsForTest(unittest.TestCase):
             {"ops": [{"replace": "f1", "text": " [2026/9/5]\t映画\t[タンジェリン]"}]},
         )
 
-    def test_none_without_frame(self):
-        self.assertIsNone(ops_for(LINES[:3], "2026/9/5", "映画", "タンジェリン"))
+    def test_inserts_after_last_row_without_frame(self):
+        lines = LINES[:3] + [{"id": "b", "text": ""}]
+        self.assertEqual(
+            ops_for(lines, "2026/9/5", "映画", "タンジェリン"),
+            {"ops": [{"insertBefore": "b", "text": " [2026/9/5]\t映画\t[タンジェリン]"}]},
+        )
+
+    def test_inserts_at_end_when_last_row_is_last_line(self):
+        self.assertEqual(
+            ops_for(LINES[:3], "2026/9/5", "映画", "タンジェリン"),
+            {"ops": [{"insertBefore": "_end", "text": " [2026/9/5]\t映画\t[タンジェリン]"}]},
+        )
 
 
 if __name__ == "__main__":

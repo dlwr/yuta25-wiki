@@ -21,11 +21,10 @@ description: 見た映画のページを Cosense に作り、「YYYY seen, read,
    - `cosense previewEdit --new --input-file tmp/body.txt https://scrapbox.io/yuta25` の出力を見せて `cosense submitEdit`。previewId は 5 分で切れるので、preview と submit は 1 つのコマンドで続けて実行する（submitEdit の確認プロンプトが承認になる）
 5. seen の枠を埋める（YYYY は視聴日の年）
    - `cosense readPage 'https://scrapbox.io/yuta25/YYYY seen, read, played' > tmp/seen.json`
-   - `python3 scripts/seen_frame.py YYYY/M/D 映画 '<邦題>' < tmp/seen.json > tmp/seen_ops.json`。exit 1 は枠が残っていない。行を足さずにその旨を報告する。exit 2 は既に表にある
+   - `python3 scripts/seen_frame.py YYYY/M/D 映画 '<邦題>' < tmp/seen.json > tmp/seen_ops.json`。枠が残っていなければ表の末尾に 1 行足す ops になる。exit 2 は既に表にある
    - pageId は `jq -r .id tmp/seen.json`。`cosense previewEdit --input-file tmp/seen_ops.json https://scrapbox.io/yuta25 <pageId>` → 手順 4 と同じく submit まで続けて実行する
 6. 報告する: ページ URL、感想を入れていなければポスターの下の空行に書く旨
 
 ## やらないこと
 
 - 本文の書き換え、既存ページへの上書き
-- 枠が無いときの insertBefore。枠はペースメーカーなので増やさない

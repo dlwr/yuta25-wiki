@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """「YYYY seen, read, played」の枠行（日付だけの行）のうち最も早いものを埋める ops を作る。
+枠が残っていなければ表の最後の行の次に 1 行足す。
 
   seen_frame.py <YYYY/M/D> <種別> <作品名> < readPage.json
-  (枠が無ければ exit 1、既に表にあれば exit 2。どちらも ops は出さない)
+  (既に表にあれば exit 2 で ops は出さない)
 """
 import json
 import re
 import sys
 
 FRAME = re.compile(r"^ \[\d{4}/\d{1,2}/\d{1,2}\]$")
+ROW = re.compile(r"^ \[\d{4}/\d{1,2}/\d{1,2}\]")
 
 
 def first_frame(lines):
@@ -27,10 +29,13 @@ def already_recorded(lines, title):
 
 
 def ops_for(lines, date, kind, title):
+    text = row(date, kind, title)
     frame = first_frame(lines)
-    if frame is None:
-        return None
-    return {"ops": [{"replace": frame["id"], "text": row(date, kind, title)}]}
+    if frame is not None:
+        return {"ops": [{"replace": frame["id"], "text": text}]}
+    last = max(i for i, line in enumerate(lines) if ROW.match(line["text"]))
+    anchor = lines[last + 1]["id"] if last + 1 < len(lines) else "_end"
+    return {"ops": [{"insertBefore": anchor, "text": text}]}
 
 
 def main():
@@ -39,11 +44,7 @@ def main():
     if already_recorded(lines, title):
         print(f"既に表にある: [{title}]", file=sys.stderr)
         sys.exit(2)
-    ops = ops_for(lines, date, kind, title)
-    if ops is None:
-        print("枠行が残っていない", file=sys.stderr)
-        sys.exit(1)
-    print(json.dumps(ops, ensure_ascii=False))
+    print(json.dumps(ops_for(lines, date, kind, title), ensure_ascii=False))
 
 
 if __name__ == "__main__":

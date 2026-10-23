@@ -39,7 +39,7 @@ scrapbox.io/yuta25（Cosense。3000 ページ超、公開、誰でも編集可�
 ### YYYY seen, read, played
 
 - 行は ` [YYYY/M/D]\t種別\t[作品名]`（先頭は半角スペース 1 つ、区切りはタブ）。日付順
-- 日付だけの行はペースメーカーとして先置きした枠。追記は必ず残っている枠のうち最も早い行を replace で埋める（日付は視聴日に書き換える）。insertBefore で行を増やさない
+- 日付だけの行はペースメーカーとして先置きした枠。追記は残っている枠のうち最も早い行を replace で埋める（日付は視聴日に書き換える）。枠を使い切ったら表の最後の行の次に 1 行ずつ insertBefore で足す
 - 種別は同じ年の表で使われている語に合わせる（2025 年以降は 映画 / ドラマ / アニメ / バラエティ / 本 / 漫画 / 雑誌 / ゲーム / ライブ / サッカー）
 
 ### YYYY年買ったもの、捨てたもの
@@ -56,7 +56,7 @@ scrapbox.io/yuta25（Cosense。3000 ページ超、公開、誰でも編集可�
 - `scripts/snapshot.sh`: titles API と listPages で tmp/ を作る
 - `scripts/audit.py`: tmp/ から診断レポートを出す
 - `scripts/movie_page.py`: ja.wikipedia の記事から映画ページの本文とポスターを作る
-- `scripts/seen_frame.py`: seen の枠行を埋める ops を出す
+- `scripts/seen_frame.py`: seen の枠行を埋める ops を出す。枠が無ければ表の末尾に足す ops
 - `scripts/wiki_draft.py`: Wikidata の外部 ID、他言語版の本文と oldid、ja でのリンク先の有無、要約欄の文面を出す
 - `scripts/webmention.py`: 自分が新しく書いた行の外部リンクへ Webmention を送る。GitHub Actions（`.github/workflows/webmention.yml`）が毎日実行する
 - `webmention-state` ブランチ: 送信記録 `webmention.json`。orphan で main とは独立。workflow が `state/` に checkout してコミットする
