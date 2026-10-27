@@ -1,5 +1,5 @@
 {
-  "since": 1793000020,
+  "since": 1793064169,
   "sent": {
     "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
       "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
@@ -107,6 +107,12 @@
         "code": null,
         "at": "2026-10-27T05:19:12+09:00",
         "attempts": 1
+      },
+      "https://anond.hatelabo.jp/20201027210826": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-28T04:50:33+09:00",
+        "attempts": 1
       }
     },
     "https://scrapbox.io/yuta25/bolg.in_2026-10-15": {
@@ -190,6 +196,30 @@
         "status": "no_endpoint",
         "code": null,
         "at": "2026-10-27T05:19:11+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%82%B3%E3%83%B3%E3%82%B0%E3%83%AC%E3%82%B9%E6%9C%AA%E6%9D%A5%E5%AD%A6%E4%BC%9A%E8%AD%B0": {
+      "https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%B3%E3%82%B0%E3%83%AC%E3%82%B9%E6%9C%AA%E6%9D%A5%E5%AD%A6%E4%BC%9A%E8%AD%B0": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-28T04:50:30+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/masuda_forever": {
+      "https://masuda-forever.yuta25.workers.dev/random": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-28T04:50:32+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%83%AD%E3%83%BC%E3%83%9E%E6%B3%95%E7%8E%8B%E3%81%AE%E4%BC%91%E6%97%A5": {
+      "https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%BC%E3%83%9E%E6%B3%95%E7%8E%8B%E3%81%AE%E4%BC%91%E6%97%A5": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-28T04:50:35+09:00",
         "attempts": 1
       }
     }
