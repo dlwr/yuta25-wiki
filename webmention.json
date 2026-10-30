@@ -1,5 +1,5 @@
 {
-  "since": 1793064169,
+  "since": 1793329852,
   "sent": {
     "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
       "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
@@ -113,6 +113,12 @@
         "code": null,
         "at": "2026-10-28T04:50:33+09:00",
         "attempts": 1
+      },
+      "https://anond.hatelabo.jp/20101030013732": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-31T04:51:12+09:00",
+        "attempts": 1
       }
     },
     "https://scrapbox.io/yuta25/bolg.in_2026-10-15": {
@@ -220,6 +226,14 @@
         "status": "no_endpoint",
         "code": null,
         "at": "2026-10-28T04:50:35+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%82%B9%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%BB%E3%83%95%E3%82%A3%E3%83%BC%E3%83%90%E3%83%BC": {
+      "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%BB%E3%83%95%E3%82%A3%E3%83%BC%E3%83%90%E3%83%BC": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-10-31T04:51:11+09:00",
         "attempts": 1
       }
     }
