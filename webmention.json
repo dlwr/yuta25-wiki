@@ -1,5 +1,5 @@
 {
-  "since": 1795478484,
+  "since": 1795510024,
   "sent": {
     "https://scrapbox.io/yuta25/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
       "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%83%E3%83%90%E3%82%A4%E3%82%AC%E3%83%BC%E3%83%AB": {
@@ -372,6 +372,20 @@
         "status": "no_endpoint",
         "code": null,
         "at": "2026-11-16T05:10:08+09:00",
+        "attempts": 1
+      }
+    },
+    "https://scrapbox.io/yuta25/%E3%81%95%E3%82%89%E3%81%B0_%E3%81%82%E3%81%B6%E3%81%AA%E3%81%84%E5%88%91%E4%BA%8B": {
+      "https://s.awa.fm/track/3660780e51de0e76e238": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-11-25T08:46:00+09:00",
+        "attempts": 1
+      },
+      "https://ja.wikipedia.org/wiki/%E3%81%95%E3%82%89%E3%81%B0_%E3%81%82%E3%81%B6%E3%81%AA%E3%81%84%E5%88%91%E4%BA%8B": {
+        "status": "no_endpoint",
+        "code": null,
+        "at": "2026-11-25T08:46:01+09:00",
         "attempts": 1
       }
     }
